@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Assuntos;
 use App\Filament\Resources\Assuntos\Pages\CreateAssunto;
 use App\Filament\Resources\Assuntos\Pages\EditAssunto;
 use App\Filament\Resources\Assuntos\Pages\ListAssuntos;
-use App\Filament\Resources\Assuntos\Pages\ViewAssunto;
 use App\Models\Assunto;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -66,6 +65,10 @@ class AssuntoResource extends Resource
             ->columns([
                 TextColumn::make('nome')->searchable()->sortable(),
                 TextColumn::make('time.nome')->label('Time')->searchable()->sortable(),
+                TextColumn::make('atendentes_count')
+                    ->label('Atendentes')
+                    ->badge()
+                    ->getStateUsing(fn (Assunto $record): int => $record->time?->atendentes_count ?? 0),
                 TextColumn::make('ativo')
                     ->badge()
                     ->formatStateUsing(fn (bool $state): string => $state ? 'Ativo' : 'Inativo')
@@ -95,7 +98,9 @@ class AssuntoResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with('time')->orderBy('nome');
+        return parent::getEloquentQuery()
+            ->with(['time' => fn ($q) => $q->withCount('atendentes')])
+            ->orderBy('nome');
     }
 
     public static function getRelations(): array
@@ -108,7 +113,6 @@ class AssuntoResource extends Resource
         return [
             'index' => ListAssuntos::route('/'),
             'create' => CreateAssunto::route('/create'),
-            'view' => ViewAssunto::route('/{record}'),
             'edit' => EditAssunto::route('/{record}/edit'),
         ];
     }

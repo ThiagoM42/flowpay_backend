@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Atendimentos;
 use App\Filament\Resources\Atendimentos\Pages\CreateAtendimento;
 use App\Filament\Resources\Atendimentos\Pages\EditAtendimento;
 use App\Filament\Resources\Atendimentos\Pages\ListAtendimentos;
-use App\Filament\Resources\Atendimentos\Pages\ViewAtendimento;
 use App\Filament\Resources\Atendimentos\RelationManagers\AtribuicoesRelationManager;
 use App\Filament\Resources\Atendimentos\RelationManagers\EventosRelationManager;
 use App\Models\Assunto;
@@ -286,7 +285,6 @@ class AtendimentoResource extends Resource
         return [
             'index' => ListAtendimentos::route('/'),
             'create' => CreateAtendimento::route('/create'),
-            'view' => ViewAtendimento::route('/{record}'),
             'edit' => EditAtendimento::route('/{record}/edit'),
         ];
     }

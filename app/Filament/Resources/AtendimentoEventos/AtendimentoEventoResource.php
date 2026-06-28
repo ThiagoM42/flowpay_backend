@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\AtendimentoEventos;
 
 use App\Filament\Resources\AtendimentoEventos\Pages\ListAtendimentoEventos;
-use App\Filament\Resources\AtendimentoEventos\Pages\ViewAtendimentoEvento;
 use App\Models\AtendimentoEvento;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -99,7 +98,6 @@ class AtendimentoEventoResource extends Resource
     {
         return [
             'index' => ListAtendimentoEventos::route('/'),
-            'view' => ViewAtendimentoEvento::route('/{record}'),
         ];
     }
 }

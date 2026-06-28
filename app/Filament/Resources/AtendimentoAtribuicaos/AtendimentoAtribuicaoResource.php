@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\AtendimentoAtribuicaos;
 
-use App\Filament\Resources\AtendimentoAtribuicaos\Pages\ViewAtendimentoAtribuicao;
 use App\Filament\Resources\AtendimentoAtribuicaos\Pages\ListAtendimentoAtribuicaos;
 use App\Models\AtendimentoAtribuicao;
 use BackedEnum;
@@ -106,7 +105,6 @@ class AtendimentoAtribuicaoResource extends Resource
     {
         return [
             'index' => ListAtendimentoAtribuicaos::route('/'),
-            'view' => ViewAtendimentoAtribuicao::route('/{record}'),
         ];
     }
 }

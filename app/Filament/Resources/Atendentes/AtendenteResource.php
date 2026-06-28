@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Atendentes;
 use App\Filament\Resources\Atendentes\Pages\CreateAtendente;
 use App\Filament\Resources\Atendentes\Pages\EditAtendente;
 use App\Filament\Resources\Atendentes\Pages\ListAtendentes;
-use App\Filament\Resources\Atendentes\Pages\ViewAtendente;
 use App\Models\Atendente;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -159,7 +158,6 @@ class AtendenteResource extends Resource
         return [
             'index' => ListAtendentes::route('/'),
             'create' => CreateAtendente::route('/create'),
-            'view' => ViewAtendente::route('/{record}'),
             'edit' => EditAtendente::route('/{record}/edit'),
         ];
     }

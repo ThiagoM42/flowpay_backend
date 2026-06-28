@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\FilaAtendimentos;
 
 use App\Filament\Resources\FilaAtendimentos\Pages\ListFilaAtendimentos;
-use App\Filament\Resources\FilaAtendimentos\Pages\ViewFilaAtendimento;
 use App\Models\FilaAtendimento;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\ViewAction;
@@ -134,7 +133,6 @@ class FilaAtendimentoResource extends Resource
     {
         return [
             'index' => ListFilaAtendimentos::route('/'),
-            'view' => ViewFilaAtendimento::route('/{record}'),
         ];
     }
 }

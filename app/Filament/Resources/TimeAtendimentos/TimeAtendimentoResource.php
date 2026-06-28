@@ -5,7 +5,6 @@ namespace App\Filament\Resources\TimeAtendimentos;
 use App\Filament\Resources\TimeAtendimentos\Pages\CreateTimeAtendimento;
 use App\Filament\Resources\TimeAtendimentos\Pages\EditTimeAtendimento;
 use App\Filament\Resources\TimeAtendimentos\Pages\ListTimeAtendimentos;
-use App\Filament\Resources\TimeAtendimentos\Pages\ViewTimeAtendimento;
 use App\Models\TimeAtendimento;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -84,7 +83,6 @@ class TimeAtendimentoResource extends Resource
         return [
             'index' => ListTimeAtendimentos::route('/'),
             'create' => CreateTimeAtendimento::route('/create'),
-            'view' => ViewTimeAtendimento::route('/{record}'),
             'edit' => EditTimeAtendimento::route('/{record}/edit'),
         ];
     }
