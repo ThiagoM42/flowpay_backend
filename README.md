@@ -1,59 +1,73 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# FlowPay — Backend de Atendimento
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API REST + painel administrativo para gerenciamento de atendimentos ao cliente, construído com Laravel 11 e Filament 5.
 
-## About Laravel
+## O que faz
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Quando um cliente abre um atendimento, o sistema encontra automaticamente o atendente mais ocioso do departamento responsável pelo assunto escolhido e faz a atribuição. Se todos os atendentes estiverem lotados (3 atendimentos simultâneos), o cliente entra na fila e é atribuído assim que um slot liberar. Cada atendimento dura 30 segundos e é finalizado automaticamente.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Laravel 11** — API e lógica de negócio
+- **Filament 5** — painel administrativo
+- **PostgreSQL** — banco de dados
+- **Redis** — cache e filas (fallback: `database`)
 
-## Learning Laravel
+## Rodando com Docker
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```bash
+docker compose up -d
+docker compose exec app php artisan migrate
+docker compose exec app php artisan queue:work
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Painel admin: `http://localhost/admin`
 
-## Laravel Sponsors
+## API
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Base URL: `http://localhost/api/v1`
 
-### Premium Partners
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| `POST` | `/atendimentos` | Abre um novo atendimento |
+| `GET` | `/atendimentos/{id}` | Retorna detalhes do atendimento |
+| `POST` | `/atendimentos/{id}/finalizar` | Finaliza o atendimento |
+| `POST` | `/atendimentos/{id}/transferir` | Transfere para outro atendente |
+| `GET` | `/dashboard` | Métricas gerais |
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Criar atendimento
 
-## Contributing
+```bash
+POST /api/v1/atendimentos
+Content-Type: application/json
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+{
+  "nome": "João Silva",
+  "email": "joao@email.com",
+  "telefone": "11999999999",  # opcional
+  "assunto_id": 1
+}
+```
 
-## Code of Conduct
+Retorna `201` com o atendimento e atendente atribuído, ou `503` se nenhum atendente estiver disponível.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Fluxo de status
 
-## Security Vulnerabilities
+```
+aguardando → em_atendimento → finalizado
+                           ↘ cancelado
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- `aguardando` — na fila, sem atendente disponível
+- `em_atendimento` — atribuído a um atendente (finaliza automaticamente em 30s)
+- `finalizado` / `cancelado` — encerrado
 
-## License
+## Comandos úteis
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+# Processar fila manualmente
+php artisan atendimento:processar-filas
+
+# Rodar scheduler (processa fila a cada minuto)
+php artisan schedule:run
+```
