@@ -15,9 +15,14 @@ class AtendimentoDistribuicaoService
     {
         $atendente = $this->encontrarAtendenteDisponivel($atendimento->time_atendimento_id);
 
-        if ($atendente) {
+        if (!$atendente) {
+            $this->enfileirar($atendimento);
+            return;
+        }
+
+        try {
             $this->atribuirAtendente($atendimento, $atendente);
-        } else {
+        } catch (\RuntimeException) {
             $this->enfileirar($atendimento);
         }
     }
@@ -27,6 +32,7 @@ class AtendimentoDistribuicaoService
         $atendentes = Atendente::query()
             ->where('time_atendimento_id', $timeId)
             ->where('status', Atendente::STATUS_ONLINE)
+            ->where('ativo', true)
             ->withCount([
                 'atribuicoes as ativas_count' => fn($q) => $q->where('status', AtendimentoAtribuicao::STATUS_ATIVO),
             ])
