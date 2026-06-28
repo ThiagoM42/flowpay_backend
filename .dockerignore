@@ -1,0 +1,16 @@
+/vendor
+/node_modules
+/.git
+/.env
+/.env.*
+!.env.example
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+.idea
+.vscode
+*.log
+Dockerfile
+docker-compose*.yml
