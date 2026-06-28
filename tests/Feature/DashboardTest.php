@@ -27,7 +27,7 @@ class DashboardTest extends TestCase
             'max_atendimentos_simultaneos' => 3,
         ]);
         $cliente = Cliente::create([
-            'nome' => 'João', 'email' => 'joao@test.com', 'documento' => '11111111111',
+            'nome' => 'João', 'email' => 'joao@test.com',
         ]);
 
         $atendimento = Atendimento::create([

@@ -50,7 +50,6 @@ class ClienteResource extends Resource
             TextInput::make('nome')->required(),
             TextInput::make('email')->email()->required(),
             TextInput::make('telefone')->tel(),
-            TextInput::make('documento')->required(),
         ]);
     }
 
@@ -60,7 +59,6 @@ class ClienteResource extends Resource
             TextEntry::make('nome'),
             TextEntry::make('email'),
             TextEntry::make('telefone')->placeholder('-'),
-            TextEntry::make('documento'),
             TextEntry::make('created_at')->dateTime()->placeholder('-'),
             TextEntry::make('updated_at')->dateTime()->placeholder('-'),
         ]);
@@ -74,7 +72,6 @@ class ClienteResource extends Resource
                 TextColumn::make('nome')->searchable()->sortable(),
                 TextColumn::make('email')->searchable()->sortable(),
                 TextColumn::make('telefone')->searchable()->toggleable(),
-                TextColumn::make('documento')->searchable()->sortable(),
                 TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->recordActions([

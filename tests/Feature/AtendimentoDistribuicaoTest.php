@@ -36,9 +36,8 @@ class AtendimentoDistribuicaoTest extends TestCase
             'max_atendimentos_simultaneos' => 3,
         ]);
         $this->cliente = Cliente::create([
-            'nome'      => 'João Silva',
-            'email'     => 'joao@test.com',
-            'documento' => '12345678901',
+            'nome'  => 'João Silva',
+            'email' => 'joao@test.com',
         ]);
     }
 
@@ -130,7 +129,6 @@ class AtendimentoDistribuicaoTest extends TestCase
         $response = $this->postJson('/api/v1/atendimentos', [
             'nome'       => 'Maria Souza',
             'email'      => 'maria@test.com',
-            'documento'  => '98765432100',
             'assunto_id' => $this->assunto->id,
         ]);
 

@@ -28,17 +28,15 @@ class AtendimentoController extends Controller
             'nome' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'telefone' => 'nullable|string|max:20',
-            'documento' => 'required|string|max:20',
             'assunto_id' => 'required|integer|exists:assuntos,id,ativo,1',
         ]);
 
         $assunto = Assunto::findOrFail($validated['assunto_id']);
 
         $cliente = Cliente::firstOrCreate(
-            ['documento' => $validated['documento']],
+            ['email' => $validated['email']],
             [
                 'nome' => $validated['nome'],
-                'email' => $validated['email'],
                 'telefone' => $validated['telefone'] ?? null,
             ]
         );

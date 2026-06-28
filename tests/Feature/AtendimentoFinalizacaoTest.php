@@ -36,9 +36,8 @@ class AtendimentoFinalizacaoTest extends TestCase
             'max_atendimentos_simultaneos' => 1,
         ]);
         $this->cliente = Cliente::create([
-            'nome'      => 'João Silva',
-            'email'     => 'joao@test.com',
-            'documento' => '12345678901',
+            'nome'  => 'João Silva',
+            'email' => 'joao@test.com',
         ]);
     }
 

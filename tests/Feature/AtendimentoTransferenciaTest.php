@@ -42,7 +42,7 @@ class AtendimentoTransferenciaTest extends TestCase
             'max_atendimentos_simultaneos' => 3,
         ]);
         $this->cliente = Cliente::create([
-            'nome' => 'João', 'email' => 'joao@test.com', 'documento' => '12345678901',
+            'nome' => 'João', 'email' => 'joao@test.com',
         ]);
     }
 
