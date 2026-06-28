@@ -45,12 +45,10 @@ class AtendimentoDistribuicaoService
     public function atribuirAtendente(Atendimento $atendimento, Atendente $atendente): void
     {
         DB::transaction(function () use ($atendimento, $atendente) {
-            // Re-check limit inside transaction to prevent race conditions
-            $query = $atendente->atribuicoesAtivas();
             if (DB::connection()->getDriverName() !== 'sqlite') {
-                $query->lockForUpdate();
+                Atendente::where('id', $atendente->id)->lockForUpdate()->first();
             }
-            $ativasCount = $query->count();
+            $ativasCount = $atendente->atribuicoesAtivas()->count();
             if ($ativasCount >= $atendente->max_atendimentos_simultaneos) {
                 throw new \RuntimeException(
                     "Atendente {$atendente->id} atingiu o limite de {$atendente->max_atendimentos_simultaneos} atendimentos simultâneos."

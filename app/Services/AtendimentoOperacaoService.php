@@ -59,13 +59,11 @@ class AtendimentoOperacaoService
         }
 
         DB::transaction(function () use ($atendimento, $atribuicaoAtual, $novoAtendente): void {
-            $query = $novoAtendente->atribuicoesAtivas();
-
             if (DB::connection()->getDriverName() !== 'sqlite') {
-                $query->lockForUpdate();
+                Atendente::where('id', $novoAtendente->id)->lockForUpdate()->first();
             }
 
-            if ($query->count() >= $novoAtendente->max_atendimentos_simultaneos) {
+            if ($novoAtendente->atribuicoesAtivas()->count() >= $novoAtendente->max_atendimentos_simultaneos) {
                 throw new \RuntimeException('limit_exceeded');
             }
 

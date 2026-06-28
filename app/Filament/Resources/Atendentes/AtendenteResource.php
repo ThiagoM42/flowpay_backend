@@ -6,8 +6,8 @@ use App\Filament\Resources\Atendentes\Pages\CreateAtendente;
 use App\Filament\Resources\Atendentes\Pages\EditAtendente;
 use App\Filament\Resources\Atendentes\Pages\ListAtendentes;
 use App\Models\Atendente;
-use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -23,15 +23,15 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use UnitEnum;
+use Illuminate\Database\Eloquent\Collection;
 
 class AtendenteResource extends Resource
 {
     protected static ?string $model = Atendente::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-user';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Cadastros';
+    protected static string|\UnitEnum|null $navigationGroup = 'Cadastros';
 
     protected static ?int $navigationSort = 4;
 
@@ -97,7 +97,7 @@ class AtendenteResource extends Resource
                 TextColumn::make('atendimentos_ativos_count')
                     ->label('Ativos')
                     ->badge()
-                    ->formatStateUsing(fn ($state, Atendente $record): string => $state . '/' . $record->max_atendimentos_simultaneos)
+                    ->formatStateUsing(fn ($state, Atendente $record): string => $state.'/'.$record->max_atendimentos_simultaneos)
                     ->color(fn ($state, Atendente $record): string => ((int) $state >= $record->max_atendimentos_simultaneos) ? 'danger' : 'success'),
                 TextColumn::make('ativo')
                     ->badge()
@@ -133,6 +133,24 @@ class AtendenteResource extends Resource
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('alterarStatus')
+                        ->label('Alterar status')
+                        ->icon('heroicon-o-arrow-path')
+                        ->form([
+                            Radio::make('status')
+                                ->label('Novo status')
+                                ->options([
+                                    Atendente::STATUS_ONLINE => 'Online',
+                                    Atendente::STATUS_PAUSADO => 'Pausado',
+                                    Atendente::STATUS_OFFLINE => 'Offline',
+                                ])
+                                ->inline()
+                                ->required(),
+                        ])
+                        ->action(function (Collection $records, array $data): void {
+                            $records->each->update(['status' => $data['status']]);
+                        })
+                        ->deselectRecordsAfterCompletion(),
                     DeleteBulkAction::make(),
                 ]),
             ]);
