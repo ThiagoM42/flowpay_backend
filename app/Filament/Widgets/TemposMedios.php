@@ -8,7 +8,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class TemposMedios extends StatsOverviewWidget
 {
-    protected ?string $pollingInterval = '10s';
+    protected ?string $pollingInterval = '5s';
 
     protected function getStats(): array
     {

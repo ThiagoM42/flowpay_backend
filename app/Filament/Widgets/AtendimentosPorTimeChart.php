@@ -9,7 +9,7 @@ class AtendimentosPorTimeChart extends ChartWidget
 {
     protected ?string $heading = 'Atendimentos por time';
 
-    protected ?string $pollingInterval = '15s';
+    protected ?string $pollingInterval = '30s';
 
     public ?string $filter = 'today';
 

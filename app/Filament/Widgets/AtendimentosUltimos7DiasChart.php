@@ -9,7 +9,7 @@ class AtendimentosUltimos7DiasChart extends ChartWidget
 {
     protected ?string $heading = 'Últimos 7 dias';
 
-    protected ?string $pollingInterval = '15s';
+    protected ?string $pollingInterval = '30s';
 
     protected function getData(): array
     {

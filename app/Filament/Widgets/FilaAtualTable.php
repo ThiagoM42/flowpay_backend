@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
 
 class FilaAtualTable extends TableWidget
 {
-    protected ?string $pollingInterval = '5s';
+    protected ?string $pollingInterval = '3s';
 
     public function table(Table $table): Table
     {

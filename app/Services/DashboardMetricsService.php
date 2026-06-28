@@ -13,7 +13,7 @@ class DashboardMetricsService
 {
     public function overview(): array
     {
-        return $this->cache('dashboard:overview', 20, function (): array {
+        return $this->cache('dashboard:overview', 3, function (): array {
             $hoje = now()->toDateString();
 
             return [
@@ -28,7 +28,7 @@ class DashboardMetricsService
 
     public function attendants(): array
     {
-        return $this->cache('dashboard:attendants', 20, function (): array {
+        return $this->cache('dashboard:attendants', 3, function (): array {
             $base = Atendente::query()->withCount([
                 'atribuicoes as atendimentos_ativos_count' => fn ($query) => $query->where('status', AtendimentoAtribuicao::STATUS_ATIVO),
             ]);
@@ -52,7 +52,7 @@ class DashboardMetricsService
 
     public function temposMedios(): array
     {
-        return $this->cache('dashboard:tempos-medios', 20, function (): array {
+        return $this->cache('dashboard:tempos-medios', 5, function (): array {
             return [
                 'espera_atual' => $this->mediaTempoEspera(now()->subDays(7), now()),
                 'atendimento_atual' => $this->mediaTempoAtendimento(now()->subDays(7), now()),
@@ -108,7 +108,7 @@ class DashboardMetricsService
 
     public function cargaAtendentes(): array
     {
-        return $this->cache('dashboard:carga-atendentes', 15, function (): array {
+        return $this->cache('dashboard:carga-atendentes', 5, function (): array {
             return Atendente::query()
                 ->where('status', Atendente::STATUS_ONLINE)
                 ->with('time')

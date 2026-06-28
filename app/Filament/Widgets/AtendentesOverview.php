@@ -8,7 +8,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class AtendentesOverview extends StatsOverviewWidget
 {
-    protected ?string $pollingInterval = '5s';
+    protected ?string $pollingInterval = '3s';
 
     protected function getStats(): array
     {

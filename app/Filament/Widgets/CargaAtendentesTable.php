@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CargaAtendentesTable extends TableWidget
 {
-    protected ?string $pollingInterval = '10s';
+    protected ?string $pollingInterval = '5s';
 
     public function table(Table $table): Table
     {

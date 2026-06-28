@@ -9,7 +9,7 @@ class AtendimentosPorAssuntoChart extends ChartWidget
 {
     protected ?string $heading = 'Top assuntos';
 
-    protected ?string $pollingInterval = '15s';
+    protected ?string $pollingInterval = '30s';
 
     public ?string $filter = 'week';
 
